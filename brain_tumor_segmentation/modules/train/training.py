@@ -176,7 +176,10 @@ class BrainSegmentation3DModel(pl.LightningModule):
         preds = torch.sigmoid(preds)
         target = one_hot(target.long(), num_classes=num_classes)
 
-        dice_value = compute_meandice(y_pred=preds.cpu(), y=target.cpu())
+        dice_value = compute_meandice(
+            y_pred=preds.cpu(), y=target.cpu(), include_background=False
+        )
+        dice_value = torch.nan_to_num(dice_value)
         dice_value = torch.mean(dice_value).detach().cpu().numpy()
         dice_value = float(dice_value)
 
