@@ -14,7 +14,6 @@ from brain_tumor_segmentation.modules.data.datasets.train_dataset import BrainSe
 from brain_tumor_segmentation.modules.data.utils import (
     create_data_loader,
     get_load_transforms,
-    get_train_transforms_3d,
     get_train_val_paths,
 )
 from brain_tumor_segmentation.modules.model.unet3d import get_unet3d_model
@@ -116,14 +115,9 @@ class BrainSegmentation3DModel(pl.LightningModule):
         return {'loss': loss, 'pred': result, 'label': label}
 
     def train_dataloader(self) -> DataLoader:
-        train_transforms = get_train_transforms_3d(
-            img_key=self.img_key, lbl_key=self.lbl_key
-        )
-
         train_brain_dataset = BrainSegDataset(
             image_mask_paths=self.train_paths,
             load_transforms=self.load_transform,
-            aug_transforms=train_transforms,
         )
 
         train_brain_dataloader = create_data_loader(
