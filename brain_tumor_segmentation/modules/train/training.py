@@ -157,10 +157,7 @@ class BrainSegmentation3DModel(pl.LightningModule):
     def _log_metrics(
         self, preds: torch.Tensor, target: torch.Tensor, prefix: str
     ) -> None:
-        dice_value = compute_meandice(
-            y_pred=preds.cpu(),
-            y=target.cpu(),
-        )
+        dice_value = self._calculate_dice(preds=preds, target=target)
 
         self.log(
             name=f'{prefix}_f1',
@@ -169,3 +166,15 @@ class BrainSegmentation3DModel(pl.LightningModule):
             logger=True,
             on_epoch=True,
         )
+
+    @staticmethod
+    def _calculate_dice(preds: torch.Tensor, target: torch.Tensor) -> float:
+        dice_value = compute_meandice(
+            y_pred=preds.cpu(),
+            y=target.cpu(),
+        )
+
+        dice_value = torch.mean(dice_value).detach().cpu().numpy()
+        dice_value = float(dice_value)
+
+        return dice_value
