@@ -1,12 +1,13 @@
 """Training module"""
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import pytorch_lightning as pl
 import torch
 from monai.losses import DiceLoss
 from monai.metrics.meandice import compute_meandice
+from monai.networks import one_hot
 from torch.utils.data import DataLoader
 
 from brain_tumor_segmentation.modules.data.datasets.train_dataset import BrainSegDataset
@@ -65,7 +66,10 @@ class BrainSegmentation3DModel(pl.LightningModule):
         self.num_processes = num_processes
         self.learning_rate = learning_rate
 
-        self.loss = DiceLoss()
+        self.loss = DiceLoss(
+            to_onehot_y=True,
+            sigmoid=True,
+        )
         self.model = get_unet3d_model(
             in_channels=in_channels,
             out_channels=out_channels,
@@ -157,10 +161,11 @@ class BrainSegmentation3DModel(pl.LightningModule):
     def _log_metrics(
         self, preds: torch.Tensor, target: torch.Tensor, prefix: str
     ) -> None:
+
         dice_value = self._calculate_dice(preds=preds, target=target)
 
         self.log(
-            name=f'{prefix}_f1',
+            name=f'{prefix}_dice',
             value=dice_value,
             prog_bar=True,
             logger=True,
@@ -169,11 +174,11 @@ class BrainSegmentation3DModel(pl.LightningModule):
 
     @staticmethod
     def _calculate_dice(preds: torch.Tensor, target: torch.Tensor) -> float:
-        dice_value = compute_meandice(
-            y_pred=preds.cpu(),
-            y=target.cpu(),
-        )
+        num_classes = preds.size()[1]
+        preds = torch.sigmoid(preds)
+        target = one_hot(target.long(), num_classes=num_classes)
 
+        dice_value = compute_meandice(y_pred=preds.cpu(), y=target.cpu())
         dice_value = torch.mean(dice_value).detach().cpu().numpy()
         dice_value = float(dice_value)
 

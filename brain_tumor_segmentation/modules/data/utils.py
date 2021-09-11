@@ -179,6 +179,7 @@ def get_load_transforms(
                 spatial_size=spatial_size,
                 mode=['trilinear', 'nearest'],
             ),
+            CastToTyped(keys=[lbl_key], dtype=np.uint8),
         ]
     )
 
