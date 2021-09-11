@@ -161,7 +161,7 @@ def get_load_transforms(
 
     transform_3d_cached = Compose(
         [
-            LoadImaged(keys=[img_key, lbl_key], dtype=np.float32),
+            LoadImaged(keys=[img_key, lbl_key]),
             AddChanneld(keys=[img_key, lbl_key]),
             ScaleIntensityRanged(
                 keys=[img_key],
@@ -171,11 +171,14 @@ def get_load_transforms(
                 b_max=1.0,
                 clip=True,
             ),
-            CastToTyped(keys=[img_key, lbl_key], dtype=np.float32),
             MapLabelValued(
                 keys=[lbl_key], orig_labels=orig_labels, target_labels=target_labels
             ),
-            Resized(keys=[img_key, lbl_key], spatial_size=spatial_size),
+            Resized(
+                keys=[img_key, lbl_key],
+                spatial_size=spatial_size,
+                mode=['trilinear', 'nearest'],
+            ),
         ]
     )
 
