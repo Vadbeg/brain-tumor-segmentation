@@ -13,8 +13,6 @@ from monai.transforms import (
     LoadImaged,
     MapLabelValued,
     RandAdjustContrastd,
-    RandFlipd,
-    RandRotate90d,
     RandRotated,
     RandScaleIntensityd,
     RandZoomd,
@@ -106,10 +104,6 @@ def get_train_transforms_3d(img_key: str, lbl_key: str) -> Compose:
             CastToTyped(keys=[img_key, lbl_key], dtype=np.float32),
             RandScaleIntensityd(keys=[img_key], factors=(-0.1, 0.1), prob=0.8),
             RandAdjustContrastd(keys=[img_key], gamma=1.5, prob=0.5),
-            RandRotate90d(keys=[img_key, lbl_key], prob=0.2),
-            RandFlipd(keys=[img_key, lbl_key], prob=0.2, spatial_axis=2),
-            RandFlipd(keys=[img_key, lbl_key], prob=0.2, spatial_axis=1),
-            RandFlipd(keys=[img_key, lbl_key], prob=0.2, spatial_axis=0),
             RandRotated(
                 keys=[img_key, lbl_key],
                 mode=['bilinear', 'nearest'],
@@ -125,7 +119,6 @@ def get_train_transforms_3d(img_key: str, lbl_key: str) -> Compose:
                 prob=0.4,
                 keep_size=True,
             ),
-            # SpatialPadd(keys=[img_key, lbl_key], spatial_size=spatial_size),
         ]
     )
 
