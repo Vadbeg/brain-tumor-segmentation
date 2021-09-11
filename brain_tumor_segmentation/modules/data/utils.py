@@ -12,7 +12,6 @@ from monai.transforms import (
     Compose,
     LoadImaged,
     MapLabelValued,
-    Orientationd,
     RandAdjustContrastd,
     RandFlipd,
     RandRotate90d,
@@ -101,9 +100,7 @@ def create_data_loader(
     return data_loader
 
 
-def get_train_transforms_3d(
-    img_key: str, lbl_key: str, spatial_size: Tuple[int, int, int]
-) -> Compose:
+def get_train_transforms_3d(img_key: str, lbl_key: str) -> Compose:
     train_transforms_3d = Compose(
         [
             CastToTyped(keys=[img_key, lbl_key], dtype=np.float32),

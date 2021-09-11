@@ -1,10 +1,8 @@
 """Module with train segmentation dataset"""
 
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 import numpy as np
-import torch
 from monai.transforms import Compose
 
 from brain_tumor_segmentation.modules.data.datasets.base_dataset import BaseDataset

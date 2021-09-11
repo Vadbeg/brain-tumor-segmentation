@@ -78,10 +78,10 @@ model:
   image_pattern: '**/*_flair.nii.gz'
   mask_pattern: '**/*_seg.nii.gz'
   spatial_size:
-  - 256
-  - 256
-  - 256
-  batch_size: 4
+  - 224
+  - 224
+  - 224
+  batch_size: 3
   num_processes: 1
   learning_rate: 0.001
   in_channels: 1

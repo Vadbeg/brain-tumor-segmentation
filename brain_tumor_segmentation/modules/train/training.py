@@ -14,9 +14,7 @@ from brain_tumor_segmentation.modules.data.datasets.train_dataset import BrainSe
 from brain_tumor_segmentation.modules.data.utils import (
     create_data_loader,
     get_load_transforms,
-    get_train_transforms_3d,
     get_train_val_paths,
-    get_val_transforms_3d,
 )
 from brain_tumor_segmentation.modules.model.unet3d import get_unet3d_model
 
@@ -77,8 +75,8 @@ class BrainSegmentation3DModel(pl.LightningModule):
         )
 
     def training_step(
-        self, batch: Dict, batch_id: int
-    ) -> Dict[str, Any]:  # pylint: disable=W0613
+        self, batch: Dict, batch_id: int  # pylint: disable=W0613
+    ) -> Dict[str, Any]:
         image = batch[self.img_key]
         label = batch[self.lbl_key]
 
@@ -97,8 +95,8 @@ class BrainSegmentation3DModel(pl.LightningModule):
         return {'loss': loss, 'pred': result, 'label': label}
 
     def validation_step(
-        self, batch: Dict, batch_id: int
-    ) -> Dict[str, Any]:  # pylint: disable=W0613
+        self, batch: Dict, batch_id: int  # pylint: disable=W0613
+    ) -> Dict[str, Any]:
         image = batch[self.img_key]
         label = batch[self.lbl_key]
 
