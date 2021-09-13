@@ -74,6 +74,14 @@ class BrainSegmentation3DModel(pl.LightningModule):
             dropout=dropout,
         )
 
+    def forward(self, image: torch.Tensor) -> torch.Tensor:
+        image = image.unsqueeze(0)
+
+        mask = self.model(image.float())
+        mask = torch.sigmoid(mask)
+
+        return mask
+
     def training_step(
         self, batch: Dict, batch_id: int  # pylint: disable=W0613
     ) -> Dict[str, Any]:
@@ -147,7 +155,7 @@ class BrainSegmentation3DModel(pl.LightningModule):
         optimizer = torch.optim.Adam(params=self.parameters(), lr=self.learning_rate)
 
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer=optimizer, factor=0.5, patience=3, mode='min'
+            optimizer=optimizer, factor=0.5, patience=3, mode='min', threshold=0.001
         )
 
         configuration = {

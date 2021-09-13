@@ -132,6 +132,7 @@ dmypy.json
 notebooks/
 logs/
 wandb/
+checkpoints/
 
 *.nii
 *.nii.gz
