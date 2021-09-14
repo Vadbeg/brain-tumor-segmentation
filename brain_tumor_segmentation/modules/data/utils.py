@@ -18,7 +18,6 @@ from monai.transforms import (
     RandZoomd,
     Resized,
     ScaleIntensityRanged,
-    SpatialPadd,
 )
 from torch.utils.data import DataLoader, Dataset
 
@@ -125,13 +124,10 @@ def get_train_transforms_3d(img_key: str, lbl_key: str) -> Compose:
     return train_transforms_3d
 
 
-def get_val_transforms_3d(
-    img_key: str, lbl_key: str, spatial_size: Tuple[int, int, int]
-) -> Compose:
+def get_val_transforms_3d(img_key: str, lbl_key: str) -> Compose:
     val_transform_3d = Compose(
         [
             CastToTyped(keys=[img_key, lbl_key], dtype=np.float32),
-            SpatialPadd(keys=[img_key, lbl_key], spatial_size=spatial_size),
         ]
     )
 

@@ -16,7 +16,9 @@ from brain_tumor_segmentation.modules.data.utils import (
     get_load_transforms,
     get_train_val_paths,
 )
-from brain_tumor_segmentation.modules.model.unet3d import get_unet3d_model
+
+# from brain_tumor_segmentation.modules.model.unet3d import get_unet3d_model
+from brain_tumor_segmentation.modules.model.dense_vnet import DenseVNet
 
 
 class BrainSegmentation3DModel(pl.LightningModule):
@@ -34,7 +36,6 @@ class BrainSegmentation3DModel(pl.LightningModule):
         learning_rate: float = 0.001,
         in_channels: int = 1,
         out_channels: int = 1,
-        dropout: float = 0.1,
     ):
         super().__init__()
         self.save_hyperparameters()
@@ -65,14 +66,9 @@ class BrainSegmentation3DModel(pl.LightningModule):
         self.learning_rate = learning_rate
 
         self.loss = DiceLoss(
-            to_onehot_y=True,
-            sigmoid=True,
+            to_onehot_y=True, sigmoid=True, jaccard=True, include_background=True
         )
-        self.model = get_unet3d_model(
-            in_channels=in_channels,
-            out_channels=out_channels,
-            dropout=dropout,
-        )
+        self.model = DenseVNet(in_channels=in_channels, out_channels=out_channels)
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         image = image.unsqueeze(0)
@@ -155,7 +151,12 @@ class BrainSegmentation3DModel(pl.LightningModule):
         optimizer = torch.optim.Adam(params=self.parameters(), lr=self.learning_rate)
 
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer=optimizer, factor=0.5, patience=3, mode='min', threshold=0.001
+            optimizer=optimizer,
+            factor=0.5,
+            patience=7,
+            mode='min',
+            threshold=0.001,
+            verbose=True,
         )
 
         configuration = {
@@ -168,7 +169,6 @@ class BrainSegmentation3DModel(pl.LightningModule):
     def _log_metrics(
         self, preds: torch.Tensor, target: torch.Tensor, prefix: str
     ) -> None:
-
         dice_value = self._calculate_dice(preds=preds, target=target)
 
         self.log(
