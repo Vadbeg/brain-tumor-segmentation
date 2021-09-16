@@ -15,7 +15,7 @@ class EvaluationApp:
         self,
         model: BrainSegmentation3DModel,
         ct_image: np.ndarray,
-        image_size: Tuple[int, int, int] = (224, 224, 224),
+        image_size: Tuple[int, int, int] = (208, 208, 208),
     ) -> None:
         self.model = model
         self.model_evaluator = ModelEvaluator(model=model, device=model.device)

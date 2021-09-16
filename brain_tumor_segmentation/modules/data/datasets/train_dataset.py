@@ -29,6 +29,8 @@ class BrainSegDataset(BaseDataset):
         if self.aug_transforms:
             image_and_mask = self.aug_transforms(image_and_mask)
 
+        image_and_mask[self.lbl_key] = np.int8(image_and_mask[self.lbl_key] != 0)
+
         return image_and_mask
 
     def __len__(self) -> int:

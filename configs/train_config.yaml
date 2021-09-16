@@ -1,16 +1,16 @@
 seed_everything: 27
 trainer:
-  logger:
-    - class_path: pytorch_lightning.loggers.WandbLogger
-      init_args:
-        name: tumor-segmentation-densevnet
-        project: tumor-segmentation
-        log_model: True
+#  logger:
+#    - class_path: pytorch_lightning.loggers.WandbLogger
+#      init_args:
+#        name: tumor-segmentation-densevnet
+#        project: tumor-segmentation
+#        log_model: True
   checkpoint_callback: true
   callbacks:
     - class_path: pytorch_lightning.callbacks.EarlyStopping
       init_args:
-        monitor: train_loss
+        monitor: val_loss
         patience: 15
         min_delta: 0.0
         verbose: true
@@ -82,11 +82,11 @@ model:
   image_pattern: '**/*_flair.nii.gz'
   mask_pattern: '**/*_seg.nii.gz'
   spatial_size:
-  - 208
-  - 208
-  - 208
-  batch_size: 1
+  - 184
+  - 184
+  - 128
+  batch_size: 2
   num_processes: 1
-  learning_rate: 0.003
+  learning_rate: 0.03
   in_channels: 1
-  out_channels: 4
+  out_channels: 2
