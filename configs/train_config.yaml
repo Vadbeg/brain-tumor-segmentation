@@ -1,11 +1,11 @@
 seed_everything: 27
 trainer:
-#  logger:
-#    - class_path: pytorch_lightning.loggers.WandbLogger
-#      init_args:
-#        name: tumor-segmentation-densevnet
-#        project: tumor-segmentation
-#        log_model: True
+  logger:
+    - class_path: pytorch_lightning.loggers.WandbLogger
+      init_args:
+        name: tumor-segmentation-densevnet
+        project: tumor-segmentation
+        log_model: True
   checkpoint_callback: true
   callbacks:
     - class_path: pytorch_lightning.callbacks.EarlyStopping
