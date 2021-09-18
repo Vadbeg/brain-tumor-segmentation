@@ -87,6 +87,6 @@ model:
   - 128
   batch_size: 2
   num_processes: 1
-  learning_rate: 0.03
+  learning_rate: 0.003
   in_channels: 1
   out_channels: 2

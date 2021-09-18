@@ -22,9 +22,15 @@ You can change size of the app window
 
 def load_ct(ct_path: str) -> np.ndarray:
     ct_all_info: Nifti1Image = nib.load(filename=ct_path)
-    ct_data = ct_all_info.get_fdata(dtype=np.float64)
+    orig_ornt = nib.io_orientation(ct_all_info.affine)
+    targ_ornt = nib.orientations.axcodes2ornt(axcodes='LPS')
+    transform = nib.orientations.ornt_transform(
+        start_ornt=orig_ornt, end_ornt=targ_ornt
+    )
 
-    return ct_data
+    img_ornt = ct_all_info.as_reoriented(ornt=transform)
+
+    return img_ornt.get_fdata(dtype=np.float64)
 
 
 def get_args():

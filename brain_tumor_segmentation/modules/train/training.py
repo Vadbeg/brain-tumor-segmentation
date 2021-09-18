@@ -153,7 +153,7 @@ class BrainSegmentation3DModel(pl.LightningModule):
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
             optimizer=optimizer,
             factor=0.5,
-            patience=10,
+            patience=5,
             mode='min',
             threshold=0.001,
             verbose=True,

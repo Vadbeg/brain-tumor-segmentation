@@ -24,6 +24,9 @@ class ModelEvaluator:
         self.device = device
 
     def evaluate(self, image: np.ndarray) -> np.ndarray:
+        print(image.max())
+        print(image.min())
+
         image_tensor = self.preprocess_image(
             image=image,
             min_value=self.min_value,
@@ -45,7 +48,7 @@ class ModelEvaluator:
         max_value: int = 200,
     ) -> torch.Tensor:
         image = np.clip(image, min_value, max_value)
-        image = (image - np.min(image)) / (np.max(image) - np.min(image))
+        image = (image - min_value) / (max_value - min_value)
 
         image_tensor = torch.tensor(image)
         image_tensor = image_tensor.unsqueeze(0)

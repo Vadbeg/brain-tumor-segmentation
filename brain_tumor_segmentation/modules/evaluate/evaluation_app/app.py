@@ -15,10 +15,15 @@ class EvaluationApp:
         self,
         model: BrainSegmentation3DModel,
         ct_image: np.ndarray,
-        image_size: Tuple[int, int, int] = (208, 208, 208),
+        image_size: Tuple[int, int, int] = (184, 184, 128),
     ) -> None:
         self.model = model
-        self.model_evaluator = ModelEvaluator(model=model, device=model.device)
+        self.model_evaluator = ModelEvaluator(
+            model=model,
+            device=model.device,
+            min_value=-200,
+            max_value=2500,
+        )
 
         self.ct_image = self._resize_ct(ct=ct_image, ct_size=image_size)
         self.ct_mask = np.zeros_like(self.ct_image)
@@ -100,12 +105,19 @@ class EvaluationApp:
         return False
 
     @staticmethod
-    def _mask_postprocessing(mask: np.ndarray, edge: float = 0.5) -> np.ndarray:
+    def _mask_postprocessing(mask: np.ndarray, edge: float = 0.95) -> np.ndarray:
         mask = np.uint8(mask > edge)  # type: ignore
         mask = mask[..., np.newaxis]
         mask = np.uint8(mask * 255)  # type: ignore
 
-        mask = np.concatenate([mask[1], mask[2], mask[3]], axis=-1)
+        mask = np.concatenate(
+            [
+                mask[1],
+                np.zeros_like(mask[1]),
+                np.zeros_like(mask[1]),
+            ],
+            axis=-1,
+        )
 
         return mask
 
