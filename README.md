@@ -5,7 +5,21 @@ Training and evaluation code for brain tumor segmentation on Flair MRI images
 ![tumor_seg_example1](images/tumor_seg_example1.gif)
 ![tumor_seg_example2](images/tumor_seg_example2.gif)
 
-Recommended way of project installation and usage is below.
+Recommended way of project installation is below. 
+To install all libraries locally read [MANUAL_INSTALLATION.md]
+
+## Installation
+
+
+## Data
+
+You can download dataset from [here](https://www.kaggle.com/dschettler8845/brats-2021-task1). 
+Unzip data to some folder. Folders structure is provided below:
+
+```
+.
+```
+
 
 ## Weights&Biases logging
 
