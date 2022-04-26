@@ -5,11 +5,11 @@ Training and evaluation code for brain tumor segmentation on Flair MRI images
 ![tumor_seg_example1](images/tumor_seg_example1.gif)
 ![tumor_seg_example2](images/tumor_seg_example2.gif)
 
-Recommended way of project installation is below. 
+Recommended way of project installation is below.
 
 ## Installation
 
-1. Install requirements 
+1. Install requirements
 
 `pip install -r requirements.txt`
 
@@ -17,7 +17,7 @@ Recommended way of project installation is below.
 
 ## Data
 
-You can download dataset from [here](https://www.kaggle.com/dschettler8845/brats-2021-task1). 
+You can download dataset from [here](https://www.kaggle.com/dschettler8845/brats-2021-task1).
 
 
 ## Weights&Biases logging
@@ -34,7 +34,7 @@ logger:
 ...
 ```
 
-You need to change `name` to your own. During first setup `wandb` will ask you to insert your own credentials. 
+You need to change `name` to your own. During first setup `wandb` will ask you to insert your own credentials.
 You can get those from [here](https://wandb.ai/settings).
 
 ## Usage
@@ -83,5 +83,3 @@ This scripts starts simple OpenCV app. In this app you can interactively check m
 * **Vadim Titko** aka *Vadbeg* -
 [LinkedIn](https://www.linkedin.com/in/vadtitko/) |
 [GitHub](https://github.com/Vadbeg/PythonHomework/commits?author=Vadbeg)
-
-
