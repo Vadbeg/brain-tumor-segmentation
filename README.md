@@ -19,6 +19,10 @@ Recommended way of project installation is below.
 
 You can download dataset from [here](https://www.kaggle.com/dschettler8845/brats-2021-task1).
 
+## Weights
+
+You can download weights from Google Drive [link](https://drive.google.com/file/d/1yAlu4bdNc0lCxdMtci9vNIEJo6XWmiyQ/view?usp=sharing). Also, you
+can convert this model to ONNX using [transform_to_onnx.py](scripts/transform_to_onnx.py) script. 
 
 ## Weights&Biases logging
 
